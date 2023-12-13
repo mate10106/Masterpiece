@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Navbar, Products, Login, Register } from "./pages/components/main";
+import Home from "./pages/Home";
+import About from "./pages/About";
+
+import { Route, Routes } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [currentForm, setCurrentForm] = useState("Login");
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  };
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Navbar />
+      <div className="container">
+        <Routes>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/products" element={<Products />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route
+            path="/login"
+            element={
+              currentForm === "register" ? (
+                <Register onFormSwitch={toggleForm} />
+              ) : (
+                <Login onFormSwitch={toggleForm} />
+              )
+            }
+          ></Route>
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
